@@ -30,6 +30,7 @@ Game.Collections.MapCollection = Backbone.Collection.extend({
 /// Views //////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
+
 ////////////////////////////////////////////////////////
 /// Map view ///////////////////////////////////////////
 /// Look of the game's map /////////////////////////////
@@ -40,7 +41,7 @@ Game.Views.MapLook = Backbone.View.extend({
 	className: 'map-piece',
 
 	initialize: function () {
-		this.listenTo(Game.collections.mapCollection, 'sort', this.render);
+
 		$('.map-container').append(this.el);
 		this.render();
 	},

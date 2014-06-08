@@ -20,35 +20,60 @@ var Game = {
 /// App view ///////////////////////////////////////////
 /// Init the collection and views //////////////////////
 ////////////////////////////////////////////////////////
+
+// another way to render map tiles, unsorted
+// this.listenTo(Game.collections.mapCollection, 'add', function (tile) {
+	// console.log(tile);
+	// Game.views.map = new Game.Views.MapLook({model:tile});
+// });
+
+
 Game.Views.AppView = Backbone.View.extend({
 
-	events: {
-
-	},
-
 	initialize: function () {
+		// Create a new map with the MapCollection constructor
 		Game.collections.mapCollection = new Game.Collections.MapCollection();
-		Game.collections.mapCollection.fetch();
-
-		this.listenTo(Game.collections.mapCollection, 'add', function (tile) {
-			Game.views.map = new Game.Views.MapLook({model:tile});
+		// Fetch the tile models
+		Game.collections.mapCollection.fetch().done( function () {
+			myCollection = Game.collections.mapCollection.where({passage: false})
+			wallCoordinates = myCollection.map( function (array) {
+				return {'x':array.attributes.xCoord*80, 'y':(array.attributes.yCoord - 1) * 80}
+			})
+		})
+		// Set the sort attribute as each tile's position
+		Game.collections.mapCollection.comparator = 'position';
+		// When the tiles are fetched, they will sort and on this event forEach over the results.models
+		this.listenTo(Game.collections.mapCollection, 'sort', function (collObj) {
+			collObj.models.forEach(function (tile) {
+				// Create a new Map View with these sorted models
+				Game.views.map = new Game.Views.MapLook({model:tile});
+			})
 		});
-
-		// Game.collections.heroCollection = new Game.Collections.HeroCollection();
-		// Game.collections.heroCollection.fetch();
-		// Game.views.hero = new Game.Views.Hero({model:Game.collections.heroCollection.findWhere({heroClass: 'whitemageF'})});
-		
 	}
 });
-var xCoord = 320;
-var yCoord = 0;
 
+// Initiate two variables to be used two store the location of the stone walls/detect collision
+var myCollection = [];
+var wallCoordinates = [];
+
+// Initiate the hero location variables as numbers and start coordinates of (0,0)
+// var xCoord = 0;
+// var yCoord = 0;
+var heroLocation = {x:0, y:0}
+
+// hero character movement
 $(window).keydown( function (key) {
 	// left arrow
 	if (key.keyCode == 37) {
-		if (xCoord > 0) {
-			xCoord = xCoord - 80;
-			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // X movement
+		// Filter out commands if you're at the edge of the board
+		if (heroLocation.x > 0 ) {
+			var upcomingHeroLocation = _.extend({}, heroLocation)
+			upcomingHeroLocation.x -= 80
+			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
+				// Each tile is 80px and moving in increments of 80 will move the character to each tile
+				heroLocation.x = heroLocation.x - 80;
+				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.x+', '+heroLocation.y+')'}); // X movement
+			}
 		}
 		else {
 			console.log('no move');
@@ -56,9 +81,18 @@ $(window).keydown( function (key) {
 	}
 	// right arrow
 	else if (key.keyCode == 39) {
-		if (xCoord <= 640) {
-			xCoord = xCoord + 80;
-			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // X movement
+		// Filter out commands if you're at the edge of the board
+		if (heroLocation.x <= 640) {
+			var upcomingHeroLocation = _.extend({}, heroLocation)
+			upcomingHeroLocation.x += 80
+			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
+				// Each tile is 80px and moving in increments of 80 will move the character to each tile
+				heroLocation.x = heroLocation.x + 80;
+				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.x+', '+heroLocation.y+')'}); // X movement
+			}
+			else {
+				console.log('no move');
+			}
 		}
 		else {
 			console.log('no move');
@@ -66,9 +100,15 @@ $(window).keydown( function (key) {
 	}
 	// up arrow
 	else if (key.keyCode == 38) {
-		if (yCoord > 0) {
-			yCoord = yCoord - 80;
-			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // Y movement
+		// Filter out commands if you're at the edge of the board
+		if (heroLocation.y > 0) {
+			var upcomingHeroLocation = _.extend({}, heroLocation)
+			upcomingHeroLocation.y -= 80
+			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
+				// Each tile is 80px and moving in increments of 80 will move the character to each tile
+				heroLocation.y = heroLocation.y - 80;
+				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.x+', '+heroLocation.y+')'}); // Y movement
+			}
 		}
 		else {
 			console.log('no move');
@@ -76,9 +116,15 @@ $(window).keydown( function (key) {
 	}
 	// down arrow
 	else if (key.keyCode == 40) {
-		if (yCoord <= 640) {
-			yCoord = yCoord + 80;
-			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // Y movement
+		// Filter out commands if you're at the edge of the board
+		if (heroLocation.y <= 640) {
+			var upcomingHeroLocation = _.extend({}, heroLocation)
+			upcomingHeroLocation.y += 80
+			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
+				// Each tile is 80px and moving in increments of 80 will move the character to each tile
+				heroLocation.y = heroLocation.y + 80;
+				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.x+', '+heroLocation.y+')'}); // Y movement
+			}
 		}
 		else {
 			console.log('no move');
@@ -86,6 +132,10 @@ $(window).keydown( function (key) {
 	}
 });
 
-// console.log(xCoord);
-// console.log(yCoord);
+//  _.findWhere(wallCoordinates, heroLocation) === undefined
 
+// var upcomingHeroLocation = _.extend({}, heroLocation)
+// upcomingHeroLocation.x += 80
+// if (_.findWhere(wallCoordinates, upcomingHeroLocation) !== undefined) {
+// 	console.log('shitdamn');
+// }

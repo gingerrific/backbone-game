@@ -82,9 +82,11 @@ Game.Views.Selection = Backbone.View.extend({
 		Game.views.hero = new Game.Views.Hero({model: this.model});
 		Game.models.mapPiece = new Game.Models.MapTile();
 		Game.views.appView = new Game.Views.AppView({model: Game.models.mapPiece});
-		Game.views.otherApp.remove();
 		$('.selection-screen').hide();
 		$('.map-container').show();
+
+		Game.views.otherApp.remove();
+		Game.views.heroPick.remove();
 	}
 });
 
