@@ -30,15 +30,15 @@ Game.Collections.HeroCollection = Backbone.Collection.extend({
 	url: 'http://tiny-pizza-server.herokuapp.com/collections/jdGameHero',
 });
 
-// adding characters 
-// hero = new Game.Models.Character({heroClass:'knightM', textureRight:'../images/knight.gif', textureLeft:'../images/knight2.gif', health: '100'});
-// 		Game.collections.heroCollection.add(hero)
-// 		hero.save();
-
-
 
 ////////////////////////////////////////////////////////
 /// Views //////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////
+/// Hero View //////////////////////////////////////////
+/// Hero on the game's map /////////////////////////////
 ////////////////////////////////////////////////////////
 
 Game.Views.Hero = Backbone.View.extend({
@@ -48,9 +48,63 @@ Game.Views.Hero = Backbone.View.extend({
 
 	initialize: function () {
 		$('.map-container').append(this.el);
+		this.render();
 	},
 
 	render: function () {
-
+		var renderedTemplate = this.template(this.model.attributes);
+		this.$el.html(renderedTemplate);
 	}
 });
+
+////////////////////////////////////////////////////////
+/// Hero Selection /////////////////////////////////////
+/// Selection Screen ///////////////////////////////////
+////////////////////////////////////////////////////////
+
+Game.Views.Selection = Backbone.View.extend({
+	template: _.template($('.character-option').text()),
+	className: 'hero-select-container',
+	events: {
+		'click': 'startGame'
+	},
+
+	initialize: function () {
+		$('.selection-screen').append(this.el);
+		this.render();
+	},
+	render: function () {
+		var renderedTemplate = this.template(this.model.attributes);
+		this.$el.html(renderedTemplate);
+	},
+
+	startGame: function () {
+		Game.views.hero = new Game.Views.Hero({model: this.model});
+		Game.models.mapPiece = new Game.Models.MapTile();
+		Game.views.appView = new Game.Views.AppView({model: Game.models.mapPiece});
+		Game.views.otherApp.remove();
+		$('.selection-screen').hide();
+		$('.map-container').show();
+	}
+});
+
+
+
+
+////////////////////////////////////////////////////////
+/// Hero Selection AppView /////////////////////////////
+/// Selection Overview /////////////////////////////////
+////////////////////////////////////////////////////////
+
+
+
+Game.Views.SelectionScreen = Backbone.View.extend({
+
+	initialize: function() {
+		Game.collections.heroCollection = new Game.Collections.HeroCollection();
+		Game.collections.heroCollection.fetch();
+		this.listenTo(Game.collections.heroCollection, 'add', function (hero) {
+					Game.views.heroPick = new Game.Views.Selection({model: hero})
+		});
+	}
+})

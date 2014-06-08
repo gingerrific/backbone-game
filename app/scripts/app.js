@@ -34,13 +34,13 @@ Game.Views.AppView = Backbone.View.extend({
 			Game.views.map = new Game.Views.MapLook({model:tile});
 		});
 
-		Game.collections.heroCollection = new Game.Collections.HeroCollection();
-		Game.collections.heroCollection.fetch();
-		Game.views.hero = new Game.Views.Hero({model:Game.collections.heroCollection.findWhere({heroClass: 'whitemageF'})});
+		// Game.collections.heroCollection = new Game.Collections.HeroCollection();
+		// Game.collections.heroCollection.fetch();
+		// Game.views.hero = new Game.Views.Hero({model:Game.collections.heroCollection.findWhere({heroClass: 'whitemageF'})});
 		
 	}
 });
-var xCoord = 0;
+var xCoord = 320;
 var yCoord = 0;
 
 $(window).keydown( function (key) {
@@ -68,10 +68,10 @@ $(window).keydown( function (key) {
 	else if (key.keyCode == 38) {
 		if (yCoord > 0) {
 			yCoord = yCoord - 80;
-			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+Y+')'}); // Y movement
+			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // Y movement
 		}
 		else {
-			console.log('no move')
+			console.log('no move');
 		}
 	}
 	// down arrow
@@ -86,4 +86,6 @@ $(window).keydown( function (key) {
 	}
 });
 
+// console.log(xCoord);
+// console.log(yCoord);
 
