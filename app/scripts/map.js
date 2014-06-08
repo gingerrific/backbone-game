@@ -45,9 +45,9 @@ Game.Views.MapLook = Backbone.View.extend({
 		$('.map-container').append(this.el);
 		this.render();
 	},
-
+	// uses the current model texture as the background of the tile/div
 	render: function () {
 			this.$el.css({background: 'url('+this.model.attributes.texture+')'});
-		}
+	}
 });
 

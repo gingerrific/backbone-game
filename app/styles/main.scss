@@ -15,15 +15,14 @@ body {
 
 .map-container {
     display: none;
-    height: 51em;
-    width: 51em;
+    height: 41em;
+    width: 41em;
     margin: 1em auto;
-    border: 1px solid transparent;
     position: relative;
 
     & .map-piece {
-        height: 5em;
-        width: 5em;
+        height: 4em;
+        width: 4em;
         background: red;
         border: 1px solid #ccc;
         float: left;
@@ -32,14 +31,16 @@ body {
 
 .hero {
     position: absolute;
-    height: 5em;
-    width: 5em;
+    height: 4em;
+    width: 4em;
     transition: all .4s linear;
     -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
 
     & img {
-        -webkit-transform: scale(.9, .9);
-        padding: .45em 1.2em .45em;
+        height: 100%;
+        width: 100%;
+        -webkit-transform: scale(.8, .8);
+        padding: 0 .7em;
     }
 }
 

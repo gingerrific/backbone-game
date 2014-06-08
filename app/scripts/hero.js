@@ -43,18 +43,38 @@ Game.Collections.HeroCollection = Backbone.Collection.extend({
 
 Game.Views.Hero = Backbone.View.extend({
 
-	template: _.template($('.hero-template').text()),
+	template: _.template($('.hero-template-right').text()),
+	leftTemplate: _.template($('.hero-template-left').text()),
 	className: 'hero',
+	
+	events: {
+		'keydown window':'movement'
+	},
 
 	initialize: function () {
 		$('.map-container').append(this.el);
 		this.render();
+		var that = this;
+		$(window).keydown(function (key){
+			if (key.keyCode === 37) {
+				that.movement();
+			}
+			else if (key.keyCode === 39) {
+				that.render();
+			}
+		});
 	},
 
 	render: function () {
 		var renderedTemplate = this.template(this.model.attributes);
 		this.$el.html(renderedTemplate);
-	}
+	},
+
+	movement: function (key) {
+		
+			var renderedTemplate = this.leftTemplate(this.model.attributes)
+			this.$el.html(renderedTemplate);
+	}	
 });
 
 ////////////////////////////////////////////////////////
@@ -77,14 +97,16 @@ Game.Views.Selection = Backbone.View.extend({
 		var renderedTemplate = this.template(this.model.attributes);
 		this.$el.html(renderedTemplate);
 	},
-
 	startGame: function () {
+		// If you click a character, that model is passed to the hero view of the board
 		Game.views.hero = new Game.Views.Hero({model: this.model});
+		// Creates a new game board (non-random)
 		Game.models.mapPiece = new Game.Models.MapTile();
 		Game.views.appView = new Game.Views.AppView({model: Game.models.mapPiece});
+		// hides the selection screen and shows the map
 		$('.selection-screen').hide();
 		$('.map-container').show();
-
+		// removes irrelevant views
 		Game.views.otherApp.remove();
 		Game.views.heroPick.remove();
 	}
@@ -106,7 +128,7 @@ Game.Views.SelectionScreen = Backbone.View.extend({
 		Game.collections.heroCollection = new Game.Collections.HeroCollection();
 		Game.collections.heroCollection.fetch();
 		this.listenTo(Game.collections.heroCollection, 'add', function (hero) {
-					Game.views.heroPick = new Game.Views.Selection({model: hero})
+			Game.views.heroPick = new Game.Views.Selection({model: hero});
 		});
 	}
-})
+});
