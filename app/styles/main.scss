@@ -32,10 +32,10 @@ body {
 
 .hero {
     position: absolute;
-    left: 0;
-    top: 0;
+    -webkit-transform: matrix(0,0,0,0);
     height: 5em;
     width: 5em;
     background: url('../images/whitemageF.gif') center no-repeat;
     transition: all .4s linear;
+
 }

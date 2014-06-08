@@ -40,23 +40,50 @@ Game.Views.AppView = Backbone.View.extend({
 		
 	}
 });
-
+var xCoord = 0;
+var yCoord = 0;
 
 $(window).keydown( function (key) {
 	// left arrow
 	if (key.keyCode == 37) {
-		$('.hero').css({left: '-=80em'});
+		if (xCoord > 0) {
+			xCoord = xCoord - 80;
+			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // X movement
+		}
+		else {
+			console.log('no move');
+		}
 	}
 	// right arrow
 	else if (key.keyCode == 39) {
-		$('.hero').css({left: '+=80em'});
+		if (xCoord <= 640) {
+			xCoord = xCoord + 80;
+			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // X movement
+		}
+		else {
+			console.log('no move');
+		}
 	}
 	// up arrow
 	else if (key.keyCode == 38) {
-		$('.hero').css({top: '-=80em'});
+		if (yCoord > 0) {
+			yCoord = yCoord - 80;
+			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+Y+')'}); // Y movement
+		}
+		else {
+			console.log('no move')
+		}
 	}
 	// down arrow
 	else if (key.keyCode == 40) {
-		$('.hero').css({top: '+=80em'});
+		if (yCoord <= 640) {
+			yCoord = yCoord + 80;
+			$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+xCoord+', '+yCoord+')'}); // Y movement
+		}
+		else {
+			console.log('no move');
+		}
 	}
 });
+
+
