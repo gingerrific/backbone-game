@@ -41,13 +41,20 @@ Game.Views.MapLook = Backbone.View.extend({
 	className: 'map-piece',
 
 	initialize: function () {
-
+		this.listenTo(this.model, 'change', this.bombTile)
 		$('.map-container').append(this.el);
 		this.render();
 	},
 	// uses the current model texture as the background of the tile/div
 	render: function () {
+			var renderedTemplate = this.mapTemplate();
+			this.$el.html(renderedTemplate);
 			this.$el.css({background: 'url('+this.model.attributes.texture+')'});
+	},
+
+	bombTile: function () {
+		this.$('div').addClass('bomb-tile');
+		// console.log($(this.el));
 	}
 });
 

@@ -23,7 +23,6 @@ body {
     & .map-piece {
         height: 4em;
         width: 4em;
-        background: red;
         border: 1px solid #ccc;
         float: left;
     }
@@ -33,7 +32,7 @@ body {
     position: absolute;
     height: 4em;
     width: 4em;
-    transition: all .4s linear;
+    transition: all .2s linear;
     -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
 
     & img {
@@ -86,9 +85,17 @@ body {
             position: absolute;
             top: -1.5em;
             left:-.5em;
-            width: 9em;
+            width: 9.1em;
             background: white;
             border-radius: 4px;
         }  
     }
+}
+
+
+.bomb-tile {
+    height: 4em;
+    width: 4em;
+    -webkit-transform: scale(1.25,1.25);
+    background: url('../backbone-game/images/bomb.png') center no-repeat; 
 }
