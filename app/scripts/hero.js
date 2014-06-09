@@ -45,6 +45,8 @@ Game.Views.Hero = Backbone.View.extend({
 
 	template: _.template($('.hero-template-right').text()),
 	leftTemplate: _.template($('.hero-template-left').text()),
+	healthTemplate: _.template($('.hero-template-health').text()),
+
 	className: 'hero',
 	
 	events: {
@@ -52,9 +54,11 @@ Game.Views.Hero = Backbone.View.extend({
 	},
 
 	initialize: function () {
+		this.listenTo(Game.models.hero, 'change:health', this.healthUpdate)
 		$('.map-container').append(this.el);
 		this.render();
 		var that = this;
+		// if window key commands are right or left, display the appropriate facing sprite
 		$(window).keydown(function (key){
 			if (key.keyCode === 37) {
 				that.movement();
@@ -71,10 +75,14 @@ Game.Views.Hero = Backbone.View.extend({
 	},
 
 	movement: function (key) {
-		
-			var renderedTemplate = this.leftTemplate(this.model.attributes)
-			this.$el.html(renderedTemplate);
-	}	
+		var renderedTemplate = this.leftTemplate(this.model.attributes);
+		this.$el.html(renderedTemplate);
+	},
+
+	healthUpdate: function () {
+		var renderedTemplate = this.healthTemplate(Game.models.hero.attributes);
+		$('.hero-status-container').html(renderedTemplate);
+	}
 });
 
 ////////////////////////////////////////////////////////
@@ -100,12 +108,14 @@ Game.Views.Selection = Backbone.View.extend({
 	startGame: function () {
 		// If you click a character, that model is passed to the hero view of the board
 		Game.views.hero = new Game.Views.Hero({model: this.model});
+		Game.models.hero.set({positionX: 0, positionY:1, health: 100, weapon: 'bombs'});
 		// Creates a new game board (non-random)
 		Game.models.mapPiece = new Game.Models.MapTile();
 		Game.views.appView = new Game.Views.AppView({model: Game.models.mapPiece});
 		// hides the selection screen and shows the map
 		$('.selection-screen').hide();
 		$('.map-container').show();
+		$('.hero-status-container').show();
 		// removes irrelevant views
 		Game.views.otherApp.remove();
 		Game.views.heroPick.remove();

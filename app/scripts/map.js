@@ -55,11 +55,11 @@ Game.Views.MapLook = Backbone.View.extend({
 
 	bombTile: function () {
 		this.$('div').toggleClass('bomb-tile');
-		// console.log($(this.el));
+		this.$('div').toggleClass('bomb-flash-zoom');
 	},
 
 	flashTile: function () {
-		this.$('div').toggleClass('bomb-flash')
+		this.$('div').toggleClass('bomb-flash');
 	}
 });
 

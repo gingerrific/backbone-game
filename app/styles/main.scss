@@ -17,7 +17,8 @@ body {
     display: none;
     height: 41em;
     width: 41em;
-    margin: 1em auto;
+    margin: 1em auto .5em;
+    padding: .5em;
     position: relative;
 
     & .map-piece {
@@ -26,6 +27,21 @@ body {
         border: 1px solid #ccc;
         float: left;
         transition: all .1s ease-out;
+    }
+}
+
+.hero-status-container {
+    display: none;
+    width: 30em;
+    height: 10em;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+    background: lighten(blue, 20%);
+    text-align: center;
+    transition: all .3s linear;
+
+    & .hero-status {
+        line-height: 10em;
     }
 }
 
@@ -98,12 +114,16 @@ body {
     height: 4em;
     width: 4em;
     -webkit-transform: scale(1.25,1.25);
-    // background: url('../backbone-game/images/bomb.png') center no-repeat; 
-    background: url('../images/bomb.png') center no-repeat; 
+    background: url('../backbone-game/images/bomb.png') center no-repeat; 
+    // background: url('../images/bomb.png') center no-repeat; 
 }
 
 .bomb-flash {
     height: 4em;
     width: 4em;
     background: darken(white, 10%);
+}
+.bomb-flash-zoom {
+    -webkit-transform: scale(1.9,1.9);
+    transition: all 1s .3s linear;
 }
