@@ -59,6 +59,29 @@ body {
         padding: 0 .7em;
     }
 }
+.enemy-container {
+    height: 10em;
+    width: 30em;
+    border: 1px solid black;
+
+    .enemy {
+        height: 4em;
+        width: 4em;
+        border: 1px solid transparent;
+        transition: all .2s linear;
+        float: left;
+        display: inline-block;
+        // -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+        // position: absolute;
+
+        & img {
+            height: 100%;
+            width: 100%;
+            -webkit-transform: scale(.8, .8);
+            padding: 0 .7em;
+        }
+    }
+}
 
 
 
@@ -114,8 +137,8 @@ body {
     height: 4em;
     width: 4em;
     -webkit-transform: scale(1.25,1.25);
-    // background: url('../backbone-game/images/bomb.png') center no-repeat; 
-    background: url('../images/bomb.png') center no-repeat; 
+    background: url('../backbone-game/images/bomb.png') center no-repeat; 
+    // background: url('../images/bomb.png') center no-repeat; 
 }
 
 .bomb-flash {

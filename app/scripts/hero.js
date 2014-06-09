@@ -54,7 +54,7 @@ Game.Views.Hero = Backbone.View.extend({
 	},
 
 	initialize: function () {
-		this.listenTo(Game.models.hero, 'change:health', this.healthUpdate)
+		this.listenTo(Game.models.hero, 'change:health', this.healthUpdate);
 		$('.map-container').append(this.el);
 		this.render();
 		var that = this;
@@ -74,7 +74,7 @@ Game.Views.Hero = Backbone.View.extend({
 		this.$el.html(renderedTemplate);
 	},
 
-	movement: function (key) {
+	movement: function () {
 		var renderedTemplate = this.leftTemplate(this.model.attributes);
 		this.$el.html(renderedTemplate);
 	},

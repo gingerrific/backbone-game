@@ -2,8 +2,8 @@
 
 var Game = {
     // constructors
-    Models: {Character:'', MapTile: ''},
-    Collections: {HeroCollection:'', MapCollection:''},
+    Models: {Character:'', MapTile: '', EnemyCharacter:''},
+    Collections: {HeroCollection:'', MapCollection:'',EnemyCollection:''},
     Views: {AppView:'', Hero: '', Selection:'', SelectionScreen:'', MapLook: ''},
     Routers: {},
 
@@ -55,6 +55,13 @@ Game.Views.AppView = Backbone.View.extend({
 				Game.views.map = new Game.Views.MapLook({model:tile});
 			});
 		});
+
+		// To add in enemies, uncomment this section
+		// Game.collections.enemyCollection = new Game.Collections.EnemyCollection()
+		// Game.collections.enemyCollection.fetch()
+		// this.listenTo(Game.collections.enemyCollection, 'add', function (enemy) {
+		//	new Game.Views.Enemy({model: enemy});
+		// })
 	}
 });
 
@@ -78,7 +85,7 @@ $(window).keydown( function (key) {
 			upcomingHeroLocation.xCoord -= 64;
 			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
 				// Setting the proper coordinate on the hero model
-				Game.models.hero.attributes.positionX -= 1
+				Game.models.hero.attributes.positionX -= 1;
 				// Each tile is 64px and moving in increments of 64 will move the character to each tile
 				heroLocation.xCoord = heroLocation.xCoord - 64;
 				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.xCoord+', '+heroLocation.yCoord+')'}); // X movement
@@ -96,7 +103,7 @@ $(window).keydown( function (key) {
 			//	findWhere will return the location where these objects have the same properties (x,y). If it's return is undefined, there is no conflict.
 			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
 				// Setting the proper coordinate on the hero model
-				Game.models.hero.attributes.positionX += 1
+				Game.models.hero.attributes.positionX += 1;
 				// Each tile is 64px and moving in increments of 64 will move the character to each tile
 				heroLocation.xCoord = heroLocation.xCoord + 64;
 				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.xCoord+', '+heroLocation.yCoord+')'}); // X movement
@@ -113,7 +120,7 @@ $(window).keydown( function (key) {
 			upcomingHeroLocation.yCoord -= 64;
 			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
 				// Setting the proper coordinate on the hero model
-				Game.models.hero.attributes.positionY -= 1
+				Game.models.hero.attributes.positionY -= 1;
 				// Each tile is 64px and moving in increments of 64 will move the character to each tile
 				heroLocation.yCoord = heroLocation.yCoord - 64;
 				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.xCoord+', '+heroLocation.yCoord+')'}); // Y movement
@@ -130,7 +137,7 @@ $(window).keydown( function (key) {
 			upcomingHeroLocation.yCoord += 64;
 			if (_.findWhere(wallCoordinates, upcomingHeroLocation) === undefined) {
 				// Setting the proper coordinate on the hero model
-				Game.models.hero.attributes.positionY += 1
+				Game.models.hero.attributes.positionY += 1;
 				// Each tile is 64px and moving in increments of 64 will move the character to each tile
 				heroLocation.yCoord = heroLocation.yCoord + 64;
 				$('.hero').css({'-webkit-transform': 'matrix(1, 0, 0, 1, '+heroLocation.xCoord+', '+heroLocation.yCoord+')'}); // Y movement
@@ -139,8 +146,9 @@ $(window).keydown( function (key) {
 	}
 
 	else if (key.keyCode === 32) { // space bar
-
-		// if the button press is space bar, create a copy of the hero location,
+		event.preventDefault();
+		var currentHealth = Game.models.hero.attributes.health;
+		// if the button pressed is space bar, create a copy of the hero location,
 		// turn it's coordinates back to single digits and find the corresponding map tile
 		// within the mapColleciton and set it's 'bomb' property to true. after 1.5s, remove this property.
 		// the related mapTile view will listen for changes to it's model and render appropriately.
@@ -154,31 +162,30 @@ $(window).keydown( function (key) {
 
 		setTimeout (function () {
 			// if directly on the bomb location when it goes off, lose 10 points of damage
-			if (bombLocation.xCoord === Game.models.hero.attributes.positionX && 
+			if (bombLocation.xCoord === Game.models.hero.attributes.positionX &&
 				bombLocation.yCoord === Game.models.hero.attributes.positionY) {
 
-				var currentHealth = Game.models.hero.attributes.health;
+				
 				Game.models.hero.set('health', (currentHealth-10));
 			}
 			// if you are in the 'blast radius', lose 5 points of health
-			else if ((bombLocation1.xCoord === Game.models.hero.attributes.positionX && 
+			else if ((bombLocation1.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation1.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation2.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation2.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation2.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation3.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation3.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation3.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation4.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation4.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation4.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation6.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation6.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation6.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation7.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation7.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation7.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation8.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation8.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation8.yCoord === Game.models.hero.attributes.positionY) ||
-					(bombLocation9.xCoord === Game.models.hero.attributes.positionX && 
+					(bombLocation9.xCoord === Game.models.hero.attributes.positionX &&
 					bombLocation9.yCoord === Game.models.hero.attributes.positionY)
 				) {
-				var currentHealth = Game.models.hero.attributes.health;
 				Game.models.hero.set('health', (currentHealth-5));
 			}
 
@@ -249,7 +256,7 @@ $(window).keydown( function (key) {
 				blast8[0].set('flash', false);
 				blast9[0].set('flash', false);
 			}, 100);
-		},1400);	
+		},1400);
 	}
 });
 
