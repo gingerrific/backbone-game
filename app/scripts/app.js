@@ -154,8 +154,6 @@ $(window).keydown( function (key) {
 		bombLocation.yCoord = (bombLocation.yCoord/64)+1
 		bombSite = Game.collections.mapCollection.where(bombLocation)
 		bombSite[0].set('bomb', true);
-		console.log(bombLocation)			
-		console.log(bombSite)			
 	}
 });
 
