@@ -25,6 +25,7 @@ body {
         width: 4em;
         border: 1px solid #ccc;
         float: left;
+        transition: all .1s ease-out;
     }
 }
 
@@ -97,5 +98,12 @@ body {
     height: 4em;
     width: 4em;
     -webkit-transform: scale(1.25,1.25);
+    // background: url('../backbone-game/images/bomb.png') center no-repeat; 
     background: url('../images/bomb.png') center no-repeat; 
+}
+
+.bomb-flash {
+    height: 4em;
+    width: 4em;
+    background: darken(white, 10%);
 }

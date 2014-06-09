@@ -65,8 +65,6 @@ var heroLocation = {xCoord:0, yCoord:0};
 // initiates what will be used as a copy of the hero location
 var upcomingHeroLocation;
 
-var bombLocation;
-var bombSite;
 
 // hero character movement
 $(window).keydown( function (key) {
@@ -149,16 +147,100 @@ $(window).keydown( function (key) {
 	}
 
 	else if (key.keyCode === 32) {
-		bombLocation = _.extend({}, heroLocation); 
+		var bombLocation = _.extend({}, heroLocation); 
 		bombLocation.xCoord = bombLocation.xCoord/64
 		bombLocation.yCoord = (bombLocation.yCoord/64)+1
-		bombSite = Game.collections.mapCollection.where(bombLocation)
+		var bombSite = Game.collections.mapCollection.where(bombLocation)
 		bombSite[0].set('bomb', true);
+
+		setTimeout (function () {
+			console.log('bombin');
+			bombSite[0].set('bomb', false);
+		}, 3000)
+
+		var bombLocation1 = _.extend({}, heroLocation);
+		var bombLocation2 = _.extend({}, heroLocation);
+		var bombLocation3 = _.extend({}, heroLocation);
+		var bombLocation4 = _.extend({}, heroLocation);
+		var bombLocation6 = _.extend({}, heroLocation);
+		var bombLocation7 = _.extend({}, heroLocation);
+		var bombLocation8 = _.extend({}, heroLocation);
+		var bombLocation9 = _.extend({}, heroLocation);
+
+
+		// top left corner
+		bombLocation1.xCoord = (bombLocation1.xCoord/64)-1
+		bombLocation1.yCoord = (bombLocation1.yCoord/64)
+		// top middle
+		bombLocation2.xCoord = (bombLocation2.xCoord/64)
+		bombLocation2.yCoord = (bombLocation2.yCoord/64)
+		// top right corner
+		bombLocation3.xCoord = (bombLocation3.xCoord/64)+1
+		bombLocation3.yCoord = (bombLocation3.yCoord/64)
+		// middle left
+		bombLocation4.xCoord = (bombLocation4.xCoord/64)-1
+		bombLocation4.yCoord = (bombLocation4.yCoord/64)+1
+		// middle right
+		bombLocation6.xCoord = (bombLocation6.xCoord/64)+1
+		bombLocation6.yCoord = (bombLocation6.yCoord/64)+1
+		// bottom left
+		bombLocation7.xCoord = (bombLocation7.xCoord/64)-1
+		bombLocation7.yCoord = (bombLocation7.yCoord/64)+2
+		// bottom middle
+		bombLocation8.xCoord = (bombLocation8.xCoord/64)
+		bombLocation8.yCoord = (bombLocation8.yCoord/64)+2
+		//bottom right
+		bombLocation9.xCoord = (bombLocation9.xCoord/64)+1
+		bombLocation9.yCoord = (bombLocation9.yCoord/64)+2
+
+		// console.log(bombLocation1.xCoord);
+		// console.log(bombLocation1.yCoord);
+		// console.log(bombLocation2.xCoord);
+		// console.log(bombLocation2.yCoord);
+		// console.log(bombLocation3.xCoord);
+		// console.log(bombLocation3.yCoord);
+		// console.log(bombLocation4.xCoord);
+		// console.log(bombLocation4.yCoord);
+		// console.log(bombLocation6.xCoord);
+		// console.log(bombLocation6.yCoord);
+		// console.log(bombLocation7.xCoord);
+		// console.log(bombLocation7.yCoord);
+		// console.log(bombLocation8.xCoord);
+		// console.log(bombLocation8.yCoord);
+		// console.log(bombLocation9.xCoord);
+		// console.log(bombLocation9.yCoord);
+		setTimeout(function () {
+
+			var blast1 = Game.collections.mapCollection.where(bombLocation1)
+			blast1[0].set('flash', true)
+			var blast2 = Game.collections.mapCollection.where(bombLocation2)
+			blast2[0].set('flash', true)
+			var blast3 = Game.collections.mapCollection.where(bombLocation3)
+			blast3[0].set('flash', true)
+			var blast4 = Game.collections.mapCollection.where(bombLocation4)
+			blast4[0].set('flash', true)
+			var blast6 = Game.collections.mapCollection.where(bombLocation6)
+			blast6[0].set('flash', true)
+			var blast7 = Game.collections.mapCollection.where(bombLocation7)
+			blast7[0].set('flash', true)
+			var blast8 = Game.collections.mapCollection.where(bombLocation8)
+			blast8[0].set('flash', true)
+			var blast9 = Game.collections.mapCollection.where(bombLocation9)
+			blast9[0].set('flash', true)
+
+			setTimeout(function () {
+				blast1[0].set('flash', false)
+				blast2[0].set('flash', false)
+				blast3[0].set('flash', false)
+				blast4[0].set('flash', false)
+				blast6[0].set('flash', false)
+				blast7[0].set('flash', false)
+				blast8[0].set('flash', false)
+				blast9[0].set('flash', false)
+			}, 100)
+		},2900)
+
+		
 	}
 });
 
-
-
-// fullMap = Game.collections.mapCollection.map(function (array) {
-// 	return {'x':array.attributes.xCoord*64, 'y':(array.attributes.yCoord - 1) * 64};
-// })

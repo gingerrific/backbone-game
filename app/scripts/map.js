@@ -41,7 +41,8 @@ Game.Views.MapLook = Backbone.View.extend({
 	className: 'map-piece',
 
 	initialize: function () {
-		this.listenTo(this.model, 'change', this.bombTile)
+		this.listenTo(this.model, 'change:bomb', this.bombTile);
+		this.listenTo(this.model, 'change:flash', this.flashTile);
 		$('.map-container').append(this.el);
 		this.render();
 	},
@@ -53,8 +54,12 @@ Game.Views.MapLook = Backbone.View.extend({
 	},
 
 	bombTile: function () {
-		this.$('div').addClass('bomb-tile');
+		this.$('div').toggleClass('bomb-tile');
 		// console.log($(this.el));
+	},
+
+	flashTile: function () {
+		this.$('div').toggleClass('bomb-flash')
 	}
 });
 
